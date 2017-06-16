@@ -1,0 +1,42 @@
+#!/bin/bash
+#Source of make_fstab_uuid
+#https://forum.salixos.org/viewtopic.php?p=1597
+#make script executable
+#chmod +x make_fstab_uuid
+#show changes without writing
+#./make_fstab_uuid /etc/fstab
+#Convert /dev/sdX to UUID in /etc/fstab
+#./make_fstab_uuid /etc/fstab -i
+
+    unset fstab inplace
+
+    if [ "x$1" != "x" ]; then
+       fstab=$1
+    else
+       echo "You must enter the path to the fstab."
+       exit
+    fi
+    if [ "x$2" != "x" ]; then
+       inplace="-i"
+    fi
+    if [ ! -r $fstab ] || [ ! -f $fstab ]; then
+       echo "'$fstab' is not readable or no regular file."
+       exit
+    fi
+
+    devices="$(cat $fstab 2>/dev/null | awk '{print $1}' 2>/dev/null | grep /dev/ 2>/dev/null)"
+    sedcommand="sed"
+
+    for device in $devices; do
+       uuid=""
+       uuid="$(blkid $device 2>/dev/null | grep -oe 'UUID="[0123456789ABCDEFabcdef-]\+"' 2>/dev/null)"
+       [ "x$uuid" = "x" ] && continue
+       sedcommand+=" -e s,^$device,$uuid,"
+    done
+
+    if [ "$sedcommand" = "sed" ]; then
+       echo "No lines to substitute found. Probably everything which can \
+    be UUID is already UUID."
+       exit
+    fi
+    eval $sedcommand $inplace $fstab 2>/dev/null
