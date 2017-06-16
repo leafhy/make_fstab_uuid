@@ -1,12 +1,12 @@
 #!/bin/bash
-#Source of make_fstab_uuid
-#https://forum.salixos.org/viewtopic.php?p=1597
-#make script executable
-#chmod +x make_fstab_uuid
-#show changes without writing
-#./make_fstab_uuid /etc/fstab
-#Convert /dev/sdX to UUID in /etc/fstab
-#./make_fstab_uuid /etc/fstab -i
+# Source
+# https://forum.salixos.org/viewtopic.php?p=1597
+# make script executable
+# chmod +x make_fstab_uuid
+# show changes without writing
+# ./make_fstab_uuid /etc/fstab
+# Convert /dev/sdX to UUID in /etc/fstab
+# ./make_fstab_uuid /etc/fstab -i
 
     unset fstab inplace
 
