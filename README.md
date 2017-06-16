@@ -1,5 +1,5 @@
 # make_fstab_uuid
-Convert /dev/sda to UUID in fstab
+Convert /dev/sdX to UUID in fstab
 
 ###### Source
 
